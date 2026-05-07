@@ -1,0 +1,86 @@
+Table employees {
+  employee_id int [pk]
+  first_name varchar [not null]
+  last_name varchar [not null]
+  position varchar
+  status varchar
+  basic_salary decimal [not null]
+  hourly_rate decimal
+  username varchar [unique]
+  password varchar
+  role varchar [not null]
+  birthday date
+  address varchar
+  phone_number varchar
+  email varchar [unique]
+  immediate_supervisor varchar
+  rice_subsidy decimal
+  phone_allowance decimal
+  clothing_allowance decimal
+  gross_semi_monthly_rate decimal
+  sss_number varchar
+  philhealth_number varchar
+  tin_number varchar
+  pagibig_number varchar
+}
+
+Table attendance_records {
+  employee_id int [not null]
+  attendance_date date [not null]
+  time_in varchar
+  time_out varchar
+
+  indexes {
+    (employee_id, attendance_date) [pk]
+  }
+}
+
+Table payroll_records {
+  id int [pk]
+  employee_id int [not null]
+  period_start date [not null]
+  period_end date [not null]
+  hours_worked decimal
+  gross decimal [not null]
+  sss decimal
+  philhealth decimal
+  pagibig decimal
+  tax decimal
+  total_deductions decimal [not null]
+  net decimal [not null]
+  basic_component decimal
+  allowance_component decimal
+}
+
+Table payroll_history {
+  employee_id int [not null]
+  cutoff_period varchar [not null]
+  basic_component decimal
+  allowance_component decimal
+  gross decimal [not null]
+  sss decimal
+  philhealth decimal
+  pagibig decimal
+  tax decimal
+  total_deductions decimal [not null]
+  net decimal [not null]
+
+  indexes {
+    (employee_id, cutoff_period) [pk]
+  }
+}
+
+Table leaves {
+  leave_id int [pk]
+  employee_id int [not null]
+  leave_type varchar [not null]
+  start_date date [not null]
+  end_date date [not null]
+  reason varchar
+  status varchar [not null]
+}
+
+Ref: attendance_records.employee_id > employees.employee_id
+Ref: payroll_records.employee_id > employees.employee_id
+Ref: payroll_history.employee_id > employees.employee_id
+Ref: leaves.employee_id > employees.employee_id
